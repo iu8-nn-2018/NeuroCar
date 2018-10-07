@@ -82,37 +82,7 @@ class Searching_Lines(Tk):
         self.resized = self.image.resize(size, Image.ANTIALIAS)
         self.tk_image = ImageTk.PhotoImage(self.resized)
         self.canvas.create_image(0, 0, anchor="nw", image=self.tk_image)
-        
-    '''
-    def check(self, event):
-        for i in range(len(self.dots) // 3):
-            x12 = self.dots[i * 3][0] - self.dots[i * 3 + 1][0]
-            x23 = self.dots[i * 3 + 1][0] - self.dots[i * 3 +2][0]
-            x31 = self.dots[i * 3 + 2][0] - self.dots[i * 3][0]
-            y12 = self.dots[i * 3][1] - self.dots[i * 3 + 1][1]
-            y23 = self.dots[i * 3 +1][1] - self.dots[i * 3 + 2][1]
-            y31 = self.dots[i * 3 + 2][1] - self.dots[i * 3][1]
-            z1 = self.dots[i * 3][0] ** 2 + self.dots[i * 3][1] ** 2
-            z2 = self.dots[i * 3 + 1][0] ** 2 + self.dots[i * 3 + 1][1] ** 2
-            z3 = self.dots[i * 3 + 2][0] ** 2 + self.dots[i * 3 + 2][1] ** 2
-            zx = y12 * z3 + y23 * z1 + y31 * z2
-            zy = x12 * z3 + x23 * z1 + x31 * z2
-            z = x12 * y31 - y12 * x31
-            xx = (-1) * zx / (2 * z)
-            self.x.append(xx)
-            yy = zy / (2 * z)
-            self.y.append(yy)
-            a = (x12 ** 2 + y12 **2) ** 0.5
-            b = (x23 ** 2 + y23 **2) ** 0.5
-            c = (x31 ** 2 + y31 **2) ** 0.5
-            p = (a + b + c) / 2
-            S = (p * (p - a) * (p - b) * (p - c)) ** 0.5
-            r = a * b * c / (4 * S)
-            self.R.append(r)
-            self.canvas.create_oval(xx - r, yy - r,
-                                   xx + r, yy + r,
-                                    fill='Red', outline="Red")
-    '''
+
     def back(self, event):
         self.canvas.delete()
         self.dots.clear()
