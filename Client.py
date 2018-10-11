@@ -10,5 +10,5 @@ sock.send(data)
 image.close()
 res = sock.recv(1024)
 print(res.decode('utf-8'))
+sock.send('Close'.encode('utf-8'))
 sock.close()
-
