@@ -1,16 +1,10 @@
 #!/bin/bash
-x=$(nmap -n -sP 10.42.0.255/24)
-substring='10.42.0'
-stationary='10.42.0.1'
-for str in $x
+x=$(cat /var/lib/misc/dnsmasq.leases)
+y=$( echo "$x" | grep -i  "raspberry" )
+for i in $(echo $y | tr " " "\n")
 do
-	if [ $(echo "$str" | grep -i  "$substring") ]
+	if [[ "$i" =~ "10.42.0" ]]
 	then
-		if [ "$str" != "$stationary" ]
-		then
-		ssh pi@"$str"
-		exit 0
-		fi
+ 	echo "$i"
 	fi
 done
-
