@@ -36,9 +36,8 @@ class Searching_Lines(Tk):
         if os.path.exists(filename):
             self.photos.remove(filename)
             ims_path.remove(arg[2])
-            self.result_file = open(filename, 'a+')
-        else:
-            self.result_file = open(filename, 'w+')
+        self.result_file = open(filename, 'r+')
+        self.data = self.result_file.read()
         self.canvas = Canvas(self, width=self.width, height=self.height, bg="white")
         self.canvas.pack(side="top", fill="both", expand=True)
         self.canvas.bind("<ButtonPress-1>", self.on_button_press)
@@ -50,12 +49,13 @@ class Searching_Lines(Tk):
         else:
             self.draw_image()
     def find_name(self):
-        for i in self.result_file:
-            if i.startswith(self.photos[self.img_number]):
-                self.img_number += 1
-                if self.img_number == len(self.photos):
-                    pass
-                self.find_name()
+        if self.data.find(ims_path[self.img_number]) != -1:
+            self.img_number += 1
+            if self.img_number >= len(self.photos):
+                self.result_file.close()
+                self.destroy()
+                pass
+            self.find_name()
 
     def draw_image(self):
         self.dots.clear()
