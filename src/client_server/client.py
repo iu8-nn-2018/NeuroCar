@@ -27,29 +27,37 @@ class Thread(QThread):
     changePixmap = pyqtSignal(QImage)
 
     def run(self):
-        host = '192.168.1.43'
-        # host =''
+        # host = '192.168.43.245'
+        host =''
         port = 3333
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((host, port))
         while True:
+            print('send')
             sock.send('get'.encode('utf-8'))
             data = sock.recv(1024)
-            print('data', len(data))
-            num = 0
-            while True:
-                num += 1
+            while len(data) != 230400:
                 l = sock.recv(1024)
-                print(len(l))
+                # print('get l')
                 if not l:
-                    continue
-                data += l
-                if len(data) == 921600:
+                    # print('not l')
                     break
-
+                data += l
+                # print('added')
+                # print(len(data))
+                if 0 < 230400 - len(data) < 1024:
+                    # print('low len')
+                    data += sock.recv(1024)
+                    # print('out')
+                    break
+            if len(data) != 230400:
+                # print('again')
+                continue
             frame = np.fromstring(data, dtype=np.uint8)
-            frame = np.reshape(frame, (480, 640, 3))
+            frame = np.reshape(frame, (240, 320, 3))
+            frame = cv2.resize(frame, (640, 480))
+            # rgbImage = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
             rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             convertToQtFormat = QImage(rgbImage.data, rgbImage.shape[1], rgbImage.shape[0], QImage.Format_RGB888)
             p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
