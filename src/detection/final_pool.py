@@ -195,8 +195,9 @@ if __name__ == '__main__':
             fr = output_q.get()
             fr = fr.flatten()
             data = fr.tostring()
+            while clien.recv(100).decode('utf-8') != 'get':
+                continue
             clien.send(data)
-
             if cv.waitKey(10) == 27:
                 break
     except:
